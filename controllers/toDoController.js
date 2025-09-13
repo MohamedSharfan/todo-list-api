@@ -1,5 +1,6 @@
 
 
+
 let todos =[
     {id:1, title:"meet the doctor", body:"get medicine"}
 ]
@@ -9,15 +10,10 @@ const getTodos = (req,res)=>{
 }
 
 const addTodo = (req,res)=>{
-    try{
-        const { title, body } = req.body;
-        const newTodo = {id: todos.length +1, title:title, body:body };
-        todos.push(newTodo);
-        res.json(newTodo);
-    }
-    catch(e){
-        console.log(e);   
-    }
+    const { title, body } = req.body;
+    const newTodo = {id: todos.length +1, title:title, body:body };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
 }
 
 const updateTodo = (req,res)=>{
@@ -42,7 +38,10 @@ const deleteTodo = (req,res) =>{
     const index = todos.findIndex(t => t.id == id);
     if(index !== -1){
         const deletedTodo = todos.splice(index,1);
-        res.json(deletedTodo);
+        res.status(200).json({
+        message: "Successfully deleted",
+        deleted: deletedTodo[0]
+        });
     }else{
         res.status(500).json("Something went wrong");
     }
